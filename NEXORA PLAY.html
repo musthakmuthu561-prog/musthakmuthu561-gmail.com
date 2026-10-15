@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a1030">
+<title>NEXORA PLAY</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap">
+<style>
+:root{--navy:#0a1030;--blue:#1b3bd1;--violet:#6a2ee8;--pink:#e0489a;--peach:#ffb48a;--ink:#f6f4ff;--dim:#c9c4ee;--bg:#0a1030;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1030}}
+:root[data-theme="dark"]{--bg:#0a1030}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:"Outfit","Trebuchet MS","Segoe UI",Verdana,sans-serif}
+body{overflow-y:auto;background:linear-gradient(160deg,#0a1030,#1b2a8f 45%,#4a2aa8 80%,#7a2f9a)}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+/* loader */
+#ld{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:calc(20px + env(safe-area-inset-top,0px)) 20px calc(20px + env(safe-area-inset-bottom,0px));background:linear-gradient(135deg,#0a1030,#1b3bd1 30%,#6a2ee8 55%,#e0489a 78%,#ffb48a);background-size:300% 300%;animation:sh 18s ease infinite;transition:opacity .6s ease,transform .6s ease}
+#ld.out{opacity:0;transform:scale(1.04);pointer-events:none}
+#ld::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,#ffffff22,transparent 55%),radial-gradient(ellipse at 50% 100%,#0a1030cc,transparent 60%);pointer-events:none}
+#bg{position:absolute;inset:0;width:100%;height:100%}
+.ctr{position:relative;z-index:2;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center}
+.logo{width:clamp(96px,22vw,140px);height:auto;filter:drop-shadow(0 0 24px #ffffff66);animation:fl 4s ease-in-out infinite}
+.orb{transform-origin:60px 60px;animation:rot 9s linear infinite}
+h1{margin:6px 0 2px;font-size:clamp(34px,9vw,58px);font-weight:800;letter-spacing:.14em;line-height:1.05}
+h1 span{font-weight:300;letter-spacing:.3em}
+.tag{margin:0 0 22px;font-size:clamp(15px,4vw,19px);color:var(--ink);opacity:.95}
+.spin{width:40px;height:40px;margin-bottom:14px}
+.spin circle{fill:none;stroke-width:4;stroke-linecap:round}
+.spin .a{stroke:#ffffff33}.spin .b{stroke:#fff;stroke-dasharray:30 90;transform-origin:20px 20px;animation:rot 1s linear infinite}
+#bar{width:100%;height:10px;border-radius:99px;background:#ffffff2e;overflow:hidden;box-shadow:inset 0 0 0 1px #ffffff22}
+#fill{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#7fd0ff,#fff,#ffd0b0);box-shadow:0 0 14px #fff9}
+.row{display:flex;justify-content:space-between;width:100%;margin:10px 0 0;font-size:15px;color:var(--ink)}
+#pct{font-variant-numeric:tabular-nums;font-weight:700}
+#err{margin-top:14px;padding:14px;border-radius:14px;background:#0a1030cc;border:1px solid #ffffff44}
+#err p{margin:0 0 10px}
+.btn{border:0;border-radius:99px;padding:12px 28px;min-height:46px;font-weight:700;cursor:pointer;background:#fff;color:#1b1560}
+.ghost{background:#ffffff1f;color:#fff;border:1px solid #ffffff66;margin-top:22px;font-weight:500}
+.btn:hover{filter:brightness(1.06)}
+/* home */
+#home{max-width:1000px;margin:0 auto;padding:18px 16px 40px;opacity:0;transition:opacity .7s ease .15s}
+#home.in{opacity:1}
+.top{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.14em}
+.top svg{width:38px;height:38px}
+.hero{position:relative;display:grid;grid-template-columns:1.2fr 1fr;gap:10px;align-items:center;margin:22px 0;padding:26px;border-radius:24px;background:linear-gradient(135deg,#ffffff1c,#ffffff08);border:1px solid #ffffff33;overflow:hidden}
+.hero h2{margin:0 0 8px;font-size:clamp(28px,6vw,46px);line-height:1.1}
+.hero p{margin:0 0 16px;color:var(--dim);max-width:34ch;line-height:1.5}
+#hc{width:100%;height:220px;display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.card{display:block;text-decoration:none;color:var(--ink);padding:16px;border-radius:18px;background:#ffffff14;border:1px solid #ffffff2e;transition:transform .2s,background .2s}
+.card:hover{transform:translateY(-4px);background:#ffffff22}
+.tile{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;margin-bottom:10px;color:#fff}
+.card b{font-size:18px}.card span{display:block;margin-top:4px;color:var(--dim);font-size:14px;line-height:1.4}
+.foot{margin-top:26px;color:var(--dim);font-size:13px}
+@media (max-width:700px){.hero{grid-template-columns:1fr}#hc{height:160px}}
+@keyframes sh{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+@keyframes rot{to{transform:rotate(360deg)}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media (prefers-reduced-motion:reduce){#ld,.logo,.orb,.spin .b{animation:none!important}#ld,#home,.card{transition:none}.spin .b{stroke-dasharray:60 60}}
+</style>
+</head>
+<body>
+<div id="ld" role="dialog" aria-label="Loading NEXORA PLAY">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="ctr">
+    <svg class="logo" viewBox="0 0 120 120" role="img" aria-label="NEXORA PLAY logo">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7fd0ff"/><stop offset=".55" stop-color="#ff7ac0"/><stop offset="1" stop-color="#ffc9a0"/></linearGradient></defs>
+      <circle cx="60" cy="60" r="54" fill="#0a103055" stroke="url(#lg)" stroke-width="3"/>
+      <polygon points="60,16 98,38 98,82 60,104 22,82 22,38" fill="none" stroke="#ffffff55" stroke-width="2"/>
+      <path d="M42 84V36L78 84V36" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <polygon points="64,56 64,76 80,66" fill="url(#lg)"/>
+      <g class="orb"><circle cx="60" cy="6" r="5" fill="#fff"/></g>
+    </svg>
+    <h1>NEXORA <span>PLAY</span></h1>
+    <p class="tag">Enter the game. Discover your world.</p>
+    <svg class="spin" viewBox="0 0 40 40" aria-hidden="true"><circle class="a" cx="20" cy="20" r="16"/><circle class="b" cx="20" cy="20" r="16"/></svg>
+    <div id="bar" role="progressbar" aria-label="Loading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="fill"></i></div>
+    <div class="row"><span id="msg" aria-live="polite">Preparing your world…</span><span id="pct">0%</span></div>
+    <div id="err" hidden role="alert"><p id="errt">We could not load everything. Please check your connection and try again.</p><button class="btn" id="retry">Retry</button></div>
+    <button class="btn ghost" id="skip">Skip Intro</button>
+  </div>
+</div>
+
+<main id="home" hidden tabindex="-1" aria-label="NEXORA PLAY home">
+  <div class="top"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="none" stroke="#ffc9a0" stroke-width="6"/><path d="M42 84V36L78 84V36" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>NEXORA PLAY</div>
+  <section class="hero">
+    <div><h2>Enter the game. Discover your world.</h2><p>Your games in one place. Pick a game and play on your phone, tablet or computer.</p><button class="btn" id="goGames">Choose a game</button></div>
+    <canvas id="hc" aria-hidden="true"></canvas>
+  </section>
+  <h3 id="games" tabindex="-1">Your games</h3>
+  <div class="grid" id="gl"></div>
+  <p class="foot">Game links open in a new tab and are private to your account until you share them.</p>
+</main>
+
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)};
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var GAMES=[['MF - Mobile Football','Build your club, play matches, buy and upgrade players.','https://claude.ai/artifact/GdYFJ8EfZQPTX5212UwyhH','MF','#1faa6b,#0b5d44'],
+['DriveX 3D','Drive Dr.Drive through a colorful 3D city.','https://claude.ai/artifact/E1NJEL9jaR6FmWr1RQKHNE','DX','#ff9933,#c0392b'],
+['Galaxy Defender','Fly, shoot and upgrade your spaceship.','https://claude.ai/artifact/PLB4a12YRaEbDienwQDcVw','GD','#4de1ff,#6a2ee8'],
+['Gravity Flip Runner','A one-button neon runner. Flip gravity and survive.','https://claude.ai/artifact/2LNqJAVc5173nzSSEd2Xwy','GF','#e0489a,#ffb48a']];
+
+/* ---- real loading steps ---- */
+var ST={lib:0,font:0,app:0,scene:0},WT={lib:.5,font:.15,app:.15,scene:.2};
+var shown=0,failed=false,finished=false,tries=0,to=null,renderer=null,hasLib=false;
+function target(){var t=0;for(var k in ST)t+=ST[k]*WT[k];return t}
+function allDone(){for(var k in ST)if(!ST[k])return false;return true}
+
+function buildHome(){
+  $('#gl').innerHTML=GAMES.map(function(g){return'<a class="card" href="'+g[2]+'" target="_blank" rel="noopener"><div class="tile" style="background:linear-gradient(135deg,'+g[4]+')">'+g[3]+'</div><b>'+g[0]+'</b><span>'+g[1]+'</span></a>'}).join('');
+  $('#goGames').addEventListener('click',function(){var h=$('#games');h.scrollIntoView({behavior:reduce?'auto':'smooth'});h.focus({preventScroll:true})});
+  ST.app=1}
+
+function loadLib(){
+  failed=false;$('#err').hidden=true;
+  var old=document.getElementById('libjs');if(old)old.remove();
+  var s=document.createElement('script');s.id='libjs';
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'+(tries?'?retry='+tries:'');
+  s.onload=function(){clearTimeout(to);hasLib=true;failed=false;$('#err').hidden=true;ST.lib=1;initScene()};
+  s.onerror=fail;document.head.appendChild(s);
+  clearTimeout(to);to=setTimeout(function(){if(!ST.lib)fail()},15000)}
+function fail(){clearTimeout(to);if(ST.lib)return;failed=true;$('#err').hidden=false;$('#errt').textContent='We could not load the game library. Please check your connection and try again.';$('#msg').textContent='Loading stopped';$('#retry').focus()}
+
+/* ---- home 3D accent (uses the loaded library) ---- */
+function initScene(){
+  try{
+    var c=$('#hc'),T=window.THREE;renderer=new T.WebGLRenderer({canvas:c,alpha:true,antialias:true});
+    var sc=new T.Scene(),cam=new T.PerspectiveCamera(45,1,.1,50);cam.position.z=5;
+    var g=new T.Mesh(new T.IcosahedronGeometry(1.6,1),new T.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:.75}));
+    var g2=new T.Mesh(new T.IcosahedronGeometry(1.1,0),new T.MeshBasicMaterial({color:0xff7ac0,wireframe:true}));
+    sc.add(g);sc.add(g2);
+    function size(){var w=c.clientWidth||300,h=c.clientHeight||200;renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();renderer.render(sc,cam)}
+    size();addEventListener('resize',size);
+    if(!reduce)(function loop(){if(!document.hidden){g.rotation.x+=.004;g.rotation.y+=.006;g2.rotation.y-=.01;renderer.render(sc,cam)}requestAnimationFrame(loop)})();
+  }catch(e){}
+  ST.scene=1}
+
+/* ---- background canvas ---- */
+var bg=$('#bg'),bx=bg.getContext('2d'),BW=0,BH=0,stars=[],parts=[],raf=0;
+for(var i=0;i<90;i++)stars.push({x:Math.random(),y:Math.random()*.7,f:.5+Math.random()*2,p:Math.random()*6,r:.4+Math.random()*1.2});
+for(i=0;i<46;i++)parts.push({x:Math.random(),y:Math.random(),s:.02+Math.random()*.05,r:1+Math.random()*3,p:Math.random()*6});
+function rs(){var d=Math.min(devicePixelRatio||1,2);BW=innerWidth;BH=innerHeight;bg.width=BW*d;bg.height=BH*d;bx.setTransform(d,0,0,d,0,0);if(reduce)draw(0)}
+function draw(t){
+  bx.clearRect(0,0,BW,BH);
+  stars.forEach(function(s){bx.globalAlpha=.25+.55*Math.abs(Math.sin(t*.001*s.f+s.p));bx.fillStyle='#fff';bx.beginPath();bx.arc(s.x*BW,s.y*BH,s.r,0,7);bx.fill()});
+  var cols=['#3a2bb580','#7b3ad199','#0a1030aa'];
+  for(var k=0;k<3;k++){bx.globalAlpha=1;bx.fillStyle=cols[k];bx.beginPath();bx.moveTo(0,BH);
+    for(var x=0;x<=BW+10;x+=10)bx.lineTo(x,BH*(.74+.06*k)+Math.sin(x*.004*(1+k*.3)+t*.0006*(1+k*.4)+k*2)*(16+k*8));
+    bx.lineTo(BW,BH);bx.closePath();bx.fill()}
+  parts.forEach(function(p){var y=((p.y-t*.00001*p.s*1000%1)+1)%1;bx.globalAlpha=.35+.3*Math.sin(t*.002+p.p);bx.fillStyle='#ffe3d0';bx.beginPath();bx.arc((p.x+Math.sin(t*.0004+p.p)*.02)*BW,y*BH,p.r,0,7);bx.fill()});
+  bx.globalAlpha=1}
+addEventListener('resize',rs);rs();
+
+/* ---- progress UI ---- */
+var MS=['Preparing your world…','Loading your games…'],mi=0,last=performance.now();
+setInterval(function(){mi++},1700);
+function tick(now){
+  var dt=Math.min((now-last)/1000,.1);last=now;
+  if(!reduce)draw(now);
+  if(!failed&&!finished){
+    var tg=target();
+    if(allDone())shown=reduce?1:Math.min(1,shown+dt*3);
+    else shown=reduce?tg:Math.min(tg,shown+(tg-shown)*Math.min(1,dt*5)+.0005);
+    var p=Math.round(shown*100);
+    $('#fill').style.width=(shown*100)+'%';$('#pct').textContent=p+'%';$('#bar').setAttribute('aria-valuenow',p);
+    if(!failed){var m=shown>=.8?'Almost ready…':MS[mi%2];if($('#msg').textContent!==m)$('#msg').textContent=m}
+    if(allDone()&&shown>=1)finish()}
+  if(!finished)raf=requestAnimationFrame(tick)}
+function finish(){
+  if(finished)return;finished=true;clearTimeout(to);
+  var ld=$('#ld'),home=$('#home');home.hidden=false;
+  requestAnimationFrame(function(){home.classList.add('in');ld.classList.add('out');
+    setTimeout(function(){ld.hidden=true;cancelAnimationFrame(raf);try{home.focus({preventScroll:true})}catch(e){}},reduce?0:650)});
+  if(hasLib&&renderer)setTimeout(function(){try{dispatchEvent(new Event('resize'))}catch(e){}},50)}
+
+$('#skip').addEventListener('click',finish);
+$('#retry').addEventListener('click',function(){tries++;$('#msg').textContent='Preparing your world…';loadLib()});
+addEventListener('keydown',function(e){if(e.key==='Escape'&&!finished)finish()});
+
+/* ---- start ---- */
+buildHome();
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){ST.font=1},function(){ST.font=1})}else ST.font=1;
+loadLib();
+raf=requestAnimationFrame(tick);
+$('#skip').focus();
+})();
+</script>
+</body>
+</html>
